@@ -1,4 +1,4 @@
-import { getImages } from './js/pixabay-api.js';
+import { fetchData } from './js/pixabay-api.js';
 import { render } from './js/render-functions.js'
 
 
@@ -10,9 +10,14 @@ import "izitoast/dist/css/iziToast.min.css";
 const form = document.querySelector("#searchForm");
 const container = document.querySelector(".gallery");
 const input = document.querySelector('[name="searchQuery"]');
-const load = document.querySelector('.load');
+const loadMoreBtn = document.querySelector(".load-more-btn");
 let searchQuery = "";
+let currentPage = 1;
+let totalHits = 0;
+loadMoreBtn.style.display = "none";
+
 form.addEventListener("submit", onSubmit);
+loadMoreBtn.addEventListener("click", onLoadMore);
 const lightbox =
     new SimpleLightbox('.gallery a', {
         nav: true,
@@ -22,19 +27,55 @@ const lightbox =
     });
 function onSubmit(event) {
     event.preventDefault();
-    load.classList.remove('visually-hidden');
     container.innerHTML = "";
+    currentPage = 1;
     searchQuery = input.value.trim();
-    getImages(searchQuery)
-        .then(images => {
-        load.classList.add('visually-hidden');
-            container.insertAdjacentHTML("beforeend", render(images)); 
-            
-            lightbox.refresh();
-            
-        })
-        .catch (error => {
-        console.log(error);
-        });
-   
+getImages()
 }
+
+function getImages() { 
+    fetchData(searchQuery, currentPage).then(data => {
+        totalHits = data.totalHits;
+    container.insertAdjacentHTML("beforeend", render(data));
+    lightbox.refresh();
+    handleLoadMoreButton(data);        
+})
+    .catch(error => {
+        console.log(error);
+    });
+}
+function onLoadMore() {
+    currentPage++;
+    getImages();
+}
+function handleLoadMoreButton(data) {
+    if (container.children.length < totalHits) {
+    loadMoreBtn.style.display = "block";
+  } else {
+    const currentHits = currentPage * 15;
+    if (currentHits >= totalHits) {
+      loadMoreBtn.style.display = "none";
+      iziToast.info({
+        title: 'Info',
+        message: `We're sorry, but you've reached the end of search results.`,
+        backgroundColor: '#4CAF50',
+        messageColor: '#fff',
+        titleColor: '#fff',
+        progressBarColor: '#4CAF50',
+        position: 'topRight',
+      });
+    } else {
+      renderMurcup(data); 
+    }
+  }
+}
+
+function smoothScroll() {
+  const itemHeight = container.firstElementChild.getBoundingClientRect().height;
+  window.scrollBy({
+    top: 3 * itemHeight,
+    behavior: "smooth",
+  });
+}
+
+container.addEventListener("scroll", smoothScroll);

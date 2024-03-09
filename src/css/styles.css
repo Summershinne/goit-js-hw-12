@@ -75,19 +75,6 @@ width: calc((100% - 24px) / 4);
     height: 200px;
 }
 
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  border: 0;
-  padding: 0;
-
-  white-space: nowrap;
-  clip-path: inset(100%);
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-}
 
 .search-form{
 text-align: center;
@@ -105,7 +92,7 @@ input{
 
 }
 
-button{
+.search-btn{
   border-radius: 8px;
     padding: 8px 16px;
     width: 91px;
@@ -116,4 +103,18 @@ button{
       letter-spacing: 0.04em;
       color: #fff;
       border-style: none;
+}
+
+.load-more-btn{
+  margin: 10px auto;
+  height: 40px;
+  border-radius: 8px;
+    padding: 8px 16px;
+        background: #4e75ff;
+        font-family: var(--font-family);
+          line-height: 150%;
+          letter-spacing: 0.04em;
+          color: #fff;
+          border-style: none;
+          
 }

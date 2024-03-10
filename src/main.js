@@ -15,6 +15,8 @@ let searchQuery = "";
 let currentPage = 1;
 let totalHits = 0;
 loadMoreBtn.style.display = "none";
+const loader = document.querySelector('.loader');
+   loader.style.display = 'none';
 
 form.addEventListener("submit", onSubmit);
 loadMoreBtn.addEventListener("click", onLoadMore);
@@ -27,34 +29,38 @@ const lightbox =
     });
 function onSubmit(event) {
     event.preventDefault();
+                    loader.style.display = 'block';
     container.innerHTML = "";
     currentPage = 1;
     searchQuery = input.value.trim();
-getImages()
+    getImages();
 }
 
 function getImages() { 
     fetchData(searchQuery, currentPage).then(data => {
         totalHits = data.totalHits;
-    container.insertAdjacentHTML("beforeend", render(data));
+        container.insertAdjacentHTML("beforeend", render(data));
+                loader.style.display = 'block';
+
     lightbox.refresh();
-    handleLoadMoreButton(data);        
+        handleLoadMoreButton(data);  
 })
     .catch(error => {
         console.log(error);
     });
 }
 function onLoadMore() {
-    currentPage++;
+ currentPage++;
     getImages();
 }
 function handleLoadMoreButton(data) {
     if (container.children.length < totalHits) {
-    loadMoreBtn.style.display = "block";
-  } else {
+        loadMoreBtn.style.display = "block";
+
+} else {
     const currentHits = currentPage * 15;
     if (currentHits >= totalHits) {
-      loadMoreBtn.style.display = "none";
+        loadMoreBtn.style.display = "none";
       iziToast.info({
         title: 'Info',
         message: `We're sorry, but you've reached the end of search results.`,
@@ -65,9 +71,12 @@ function handleLoadMoreButton(data) {
         position: 'topRight',
       });
     } else {
-      renderMurcup(data); 
+        renderMurcup(data); 
+        
+    } 
     }
-  }
+    
+
 }
 
 function smoothScroll() {

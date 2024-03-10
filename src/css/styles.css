@@ -7,51 +7,32 @@
 @import url('./reset.css');
 
 .loader {
-  width: 108px;
-  height: 16px;
-  background:
-    radial-gradient(circle 8px at 8px center, #FFF 100%, transparent 0),
-    radial-gradient(circle 8px at 8px center, #FFF 100%, transparent 0);
-  background-size: 16px 16px;
-  background-repeat: no-repeat;
-  position: relative;
-  animation: ballX 1s linear infinite;
-}
-
-.loader:before {
-  content: "";
-  position: absolute;
   width: 16px;
   height: 16px;
   border-radius: 50%;
+  display: block;
+  margin: 15px auto;
+  position: relative;
   background: #FFF;
-  inset: 0;
-  margin: auto;
-  animation: moveX 1s cubic-bezier(0.5, 300, 0.5, -300) infinite;
+  box-shadow: -24px 0 #FFF, 24px 0 #FFF;
+  box-sizing: border-box;
+  animation: shadowPulse 2s linear infinite;
 }
 
-@keyframes ballX {
+@keyframes shadowPulse {
+  33% {
+    background: #FFF;
+    box-shadow: -24px 0 #FF3D00, 24px 0 #FFF;
+  }
 
-  0%,
-  25%,
-  50%,
-  75%,
+  66% {
+    background: #FF3D00;
+    box-shadow: -24px 0 #FFF, 24px 0 #FFF;
+  }
+
   100% {
-    background-position: 25% 0, 75% 0
-  }
-
-  40% {
-    background-position: 25% 0, 85% 0
-  }
-
-  90% {
-    background-position: 15% 0, 75% 0
-  }
-}
-
-@keyframes moveX {
-  100% {
-    transform: translate(0.15px)
+    background: #FFF;
+    box-shadow: -24px 0 #FFF, 24px 0 #FF3D00;
   }
 }
 

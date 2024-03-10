@@ -5,7 +5,6 @@ import axios from 'axios';
 const KEY = '42718144-5d5fd5e0a4a425e2316f701b3';
 const BASE_URL = 'https://pixabay.com/api/';
 
-const loader = document.querySelector('.loader');
 let perPage = 15;
 export async function fetchData(searchQuery, currentPage) {
     const params = new URLSearchParams({
@@ -17,14 +16,12 @@ export async function fetchData(searchQuery, currentPage) {
         page: currentPage,
     per_page: perPage
     });
-   loader.style.display = 'block';
     try {
         const response = await axios.get(`${BASE_URL}?${params}`)
         if (!response.status === 200) {
             throw new Error('Network response was not OK!');
         }
         const data = response.data;
- loader.style.display = 'none';
         if (data.hits.length === 0) {
             iziToast.error({
                 fontSize: 'large',

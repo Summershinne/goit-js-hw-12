@@ -71,11 +71,10 @@ function handleLoadMoreButton(data) {
 }
 
 function smoothScroll() {
-  const itemHeight = container.firstElementChild.getBoundingClientRect().height;
+    const itemHeight = container.firstElementChild.getBoundingClientRect().height;
   window.scrollBy({
     top: 3 * itemHeight,
     behavior: "smooth",
   });
-}
-
+};
 container.addEventListener("scroll", smoothScroll);

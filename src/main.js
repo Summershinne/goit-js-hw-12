@@ -11,11 +11,12 @@ const form = document.querySelector("#searchForm");
 const container = document.querySelector(".gallery");
 const input = document.querySelector('[name="searchQuery"]');
 const loadMoreBtn = document.querySelector(".load-more-btn");
+const loader = document.querySelector('.loader');
+
 let searchQuery = "";
 let currentPage = 1;
 let totalHits = 0;
 loadMoreBtn.style.display = "none";
-const loader = document.querySelector('.loader');
    loader.style.display = 'none';
 
 form.addEventListener("submit", onSubmit);
@@ -29,7 +30,7 @@ const lightbox =
     });
 function onSubmit(event) {
     event.preventDefault();
-                    loader.style.display = 'block';
+    loader.style.display = 'block';
     container.innerHTML = "";
     currentPage = 1;
     searchQuery = input.value.trim();
@@ -40,7 +41,7 @@ function getImages() {
     fetchData(searchQuery, currentPage).then(data => {
         totalHits = data.totalHits;
         container.insertAdjacentHTML("beforeend", render(data));
-                loader.style.display = 'block';
+        loader.style.display = 'none';
 
     lightbox.refresh();
         handleLoadMoreButton(data);  
